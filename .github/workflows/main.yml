@@ -11,10 +11,11 @@ jobs:
 
     steps:
     - name: Checkout code
-    - uses: actions/checkout@v2
+      id: CheckCode
+      uses: actions/checkout@v2
 
     - name: Run Trivy vulnerability scanner
-      id: scan
+      id: ScanVulnerability
       uses: aquasecurity/trivy-action@master
       with:
         scan-type: 'fs'
@@ -25,19 +26,14 @@ jobs:
         output: 'trivy-report.txt'
         severity: 'CRITICAL,HIGH'
 
-    - name: Check for vulnerabilities and send to Slack
-      if: steps.scan.outcome == 'failure'
-      run: |
-        # Extract details from the report if necessary
-        # For simplicity, we'll assume the whole report is a vulnerability
-        REPORT=$(<report.txt)
-        
-        curl -X POST -H 'Content-type: application/json' --data "{
-          \"text\": \"Vulnerabilities found in the codebase:\n${REPORT}\",
-          \"attachments\": [
-            {
-              \"title\": \"Full Scan Report\",
-              \"text\": \"${REPORT}\"
-            }
-          ]
-        }" ""
+    - name: Post to a Slack channel via a proxy
+      id: slack
+      uses: slackapi/slack-github-action@v1.24.0
+      with:
+        channel-id: 'CHANNEL_ID'
+        slack-message: 'This message was sent through a proxy'
+        slack-file-path: 'trivy-result.txt'
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.CICD_REPORT_BOTTOKEN }}
+        # Set the HTTPS_PROXY environment variable to whatever your policy requires
+        HTTPS_PROXY: ${{ secrets.CICD_TEST_WEBHOOK }}
