@@ -27,7 +27,7 @@ jobs:
 
     - name: Build Docker image
       id: SetDockerImageTag
-      run: docker build -t CICD_Test:${GITHUB_SHA::8} .
+      run: docker build -t cicd-test:${GITHUB_SHA::8} .
 
     # - name: Send custom JSON data to Slack workflow
     #   id: slack
