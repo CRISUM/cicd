@@ -6,20 +6,21 @@ on:
       - 'v\d+.\d+'  # matches v<digit>.<digit>
 
 jobs:
-  CI_CD_Pipeline:
+  build:
+    name: CI_CD_Pipeline
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       id: CheckCode
       uses: actions/checkout@v2
-      
+
     - name: Run Trivy vulnerability scanner in repo mode
       uses: aquasecurity/trivy-action@master
       with:
         scan-type: 'fs'
         ignore-unfixed: true
-        format: 'sarif'
+        format: 'table'
         output: 'trivy-results.sarif'
         severity: 'CRITICAL'
 
