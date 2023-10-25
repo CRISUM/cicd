@@ -48,8 +48,9 @@ jobs:
       id: slack
       uses: slackapi/slack-github-action@v1.24.0
       with:
-        channel-id: 'C05QWSVMH0S'
+        payload-file-path: "./payload.json"
         slack-message: 'This message was sent through a proxy'
       env:
-        SLACK_BOT_TOKEN: ${{ secrets.CICD_REPORT_BOTTOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.CICD_TEST_WEBHOOK }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
