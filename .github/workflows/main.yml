@@ -52,5 +52,4 @@ jobs:
         slack-message: 'This message was sent through a proxy'
       env:
         SLACK_BOT_TOKEN: ${{ secrets.CICD_REPORT_BOTTOKEN }}
-        # Set the HTTPS_PROXY environment variable to whatever your policy requires
-        HTTPS_PROXY: ${{ secrets.CICD_TEST_WEBHOOK }}
+
