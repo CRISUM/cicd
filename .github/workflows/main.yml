@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - 'v\d+.\d+'  # matches v<digit>.<digit>
+
+jobs:
+  CI_CD_Pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+    - uses: actions/checkout@v2
+
+    - name: Run Trivy vulnerability scanner
+      id: scan
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        input: '.'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: 'false'
+        output: 'trivy-report.txt'
+        severity: 'CRITICAL,HIGH'
+
+    - name: Check for vulnerabilities and send to Slack
+      if: steps.scan.outcome == 'failure'
+      run: |
+        # Extract details from the report if necessary
+        # For simplicity, we'll assume the whole report is a vulnerability
+        REPORT=$(<report.txt)
+        
+        curl -X POST -H 'Content-type: application/json' --data "{
+          \"text\": \"Vulnerabilities found in the codebase:\n${REPORT}\",
+          \"attachments\": [
+            {
+              \"title\": \"Full Scan Report\",
+              \"text\": \"${REPORT}\"
+            }
+          ]
+        }" ""
