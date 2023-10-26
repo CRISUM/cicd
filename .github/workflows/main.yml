@@ -61,11 +61,11 @@ jobs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Actions URL:*\n<https://github.com/${{github.repository}}/actions|XXX>"
+                    "text": "*Actions URL:*\n<https://github.com/${{github.repository}}/actions>"
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Commit:*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}|XXX>"
+                    "text": "*Commit:*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>"
                   },
                   {
                     "type": "mrkdwn",
