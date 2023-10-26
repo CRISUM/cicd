@@ -99,7 +99,7 @@ jobs:
       id: build-and-push
       with:
         # Do be aware that this is where you set your path.
-        context: ./fortunes
+        context: ./fortunes/
         # file: /Dockerfile
         push: true
         tags: saiwanita/cicd-test:latest
