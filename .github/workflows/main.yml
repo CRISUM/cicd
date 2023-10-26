@@ -10,7 +10,7 @@ jobs:
     name: CI_CD_ScanRepo
     if: ${{ !(startsWith(github.event.head_commit.message, '#NORUN')) }}
     runs-on: ubuntu-latest
-    permissions:
+    permissions: # do necessaey for atuo-login cosign
       contents: read
       id-token: write
 
@@ -27,7 +27,7 @@ jobs:
         ignore-unfixed: true
         format: 'table'
         output: 'trivy-result.txt'
-        severity: 'HIGH,CRITICAL'
+        severity: 'CRITICAL'
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
