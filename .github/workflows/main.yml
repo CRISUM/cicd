@@ -38,14 +38,56 @@ jobs:
         channel-id: 'C062UQF9HFB'
         payload: |
           {
-            "text": "GitHub Action build result: Failure",
-            "blocks": [
+            "text": "From Github: Failure Workflow Notification",
+            "blocks":
+            [
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "From Github: Failure Workflow Notification"
+                }
+              },
               {
                 "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-                }
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Ref:*\n${{github.ref}}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Event:*\n${{github.event_name}}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Actions URL:*\n<https://github.com/${{github.repository}}/actions|XXX>"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Commit:*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}|XXX>"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Scan Failed:*\nFailed trivy scan, see upload report."
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Name:*\nZou Dingyang"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Metriculation:*\nA0286002N"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Email:*\nzouding@foxmail.com"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Git:*\n${{github.repository}}"
+                  }
+                ]
               }
             ]
           }
@@ -114,6 +156,7 @@ jobs:
       uses: sigstore/cosign-installer@v3.1.1
       with:
         github-token: ${{ github.token }}   
+
     - name: Check install!
       run: cosign version
      
@@ -130,48 +173,62 @@ jobs:
         channel-id: 'C062UQF9HFB'
         payload: |
           {
-            "text": "hohoho: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
-            "blocks": [
+            "text": "From Github: Success Workflow Notification",
+            "blocks":
+            [
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "From Github: Success Workflow Notification"
+                }
+              },
               {
                 "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-                }
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Ref:*\n${{github.ref}}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Event:*\n${{github.event_name}}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Actions URL:*\n<https://github.com/${{github.repository}}/actions|XXX>"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Commit:*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}|XXX>"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Scan Success"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Name:*\nXXX"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Metriculation:*\nXXX"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Email:*\nXXX"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Git:*\n${{github.repository}}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Image:*\nhttps://hub.docker.com/r/saiwanita/cicd-test"
+                  }
+                ]
               }
             ]
           }
       env:
         SLACK_BOT_TOKEN: ${{ secrets.CICD_G6_BOTTOKEN }}
-
-          
-    # - name: Send custom JSON data to Slack workflow
-    #   id: slack
-    #   uses: slackapi/slack-github-action@v1.24.0
-    #   with:
-    #     payload-file-path: "./payload.json"
-    #   env:
-    #     SLACK_WEBHOOK_URL: ${{ secrets.CICD_TEST_WEBHOOK }}
-
-    # - name: Run Trivy vulnerability scanner
-    #   id: ScanVulnerability
-    #   uses: aquasecurity/trivy-action@master
-    #   with:
-    #     scan-type: 'fs'
-    #     input: '.'
-    #     format: 'table'
-    #     exit-code: '1'
-    #     ignore-unfixed: 'false'
-    #     output: 'trivy-report.txt'
-    #     severity: 'CRITICAL,HIGH'
-
-    # - name: Post to a Slack channel via a proxy
-    #   id: slack
-    #   uses: slackapi/slack-github-action@v1.24.0
-    #   with:
-    #     payload-file-path: "./payload.json"
-    #     slack-message: 'This message was sent through a proxy'
-    #   env:
-    #     SLACK_WEBHOOK_URL: ${{ secrets.CICD_TEST_WEBHOOK }}
-    #     SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-
