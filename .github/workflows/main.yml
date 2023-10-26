@@ -76,6 +76,10 @@ jobs:
       id-token: write
     if:  ${{ failure() }}
     steps:
+      
+    - name: Checkout code
+      id: CheckCode
+      uses: actions/checkout@v3
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
