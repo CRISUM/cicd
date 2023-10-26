@@ -26,27 +26,6 @@ jobs:
         output: 'trivy-result.txt'
         severity: 'CRITICAL'
 
-    # - name: Slack Notification Of Failure
-    #   id: slack
-    #   uses: slackapi/slack-github-action@v1.24.0
-    #   with:
-    #     channel-id: 'C062UQF9HFB'
-    #     payload: |
-    #       {
-    #         "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
-    #         "blocks": [
-    #           {
-    #             "type": "section",
-    #             "text": {
-    #               "type": "mrkdwn",
-    #               "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-    #             }
-    #           }
-    #         ]
-    #       }
-    #   env:
-    #     SLACK_BOT_TOKEN: ${{ secrets.CICD_G6_BOTTOKEN }}
-
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
 
@@ -119,6 +98,28 @@ jobs:
         env:
           # Set the HTTPS_PROXY environment variable to whatever your policy requires
           HTTPS_PROXY: ${{ secrets.CICD_G6_WEBHOOK }}
+
+      - name: Slack Notification Of Failure
+        id: slack
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: 'C062UQF9HFB'
+          payload: |
+          {
+            "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                }
+              }
+            ]
+          }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.CICD_G6_BOTTOKEN }}
+
           
     # - name: Send custom JSON data to Slack workflow
     #   id: slack
