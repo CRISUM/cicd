@@ -72,7 +72,7 @@ jobs:
       with:
         # platforms: linux/amd64,linux/arm/v7,linux/arm64
         context: .
-        file: ./fortunes/Dockerfile
+        file: ./Dockerfile
         push: true
         tags: saiwanita/cicd-test:latest
  
