@@ -54,7 +54,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         push: true
-        tags: user/app:${{steps.commit.outputs.short}}
+        tags: cicd-image:${{steps.commit.outputs.short}}
 
     # - name: Send custom JSON data to Slack workflow
     #   id: slack
