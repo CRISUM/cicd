@@ -30,7 +30,7 @@ jobs:
         severity: 'HIGH,CRITICAL'
 
     - name: Notify Slack and upload file on Failure
-      if: failure()
+      if: success()
       id: slack
       uses: slackapi/slack-github-action@v1.24.0
       with:
@@ -70,7 +70,7 @@ jobs:
       uses: docker/build-push-action@v5
       id: build-and-push
       with:
-        # platforms: linux/amd64,linux/arm/v7,linux/arm64
+        # Do be aware that this is where you set your path.
         context: ./fortunes
         # file: /Dockerfile
         push: true
