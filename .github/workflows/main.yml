@@ -24,18 +24,37 @@ jobs:
         format: 'table'
         output: 'trivy-results.txt'
         severity: 'HIGH,CRITICAL'
-        
-    - name: Post to a Slack channel via a proxy
+
+    - name: Notify Slack and upload file on Failure
+      if: failure()
       id: slack
       uses: slackapi/slack-github-action@v1.24.0
       with:
         channel-id: 'C062UQF9HFB'
         slack-message: 'This message was sent through a proxy'
-        slack-file-path: 'trivy-result.txt'
+        slack-file-path: trivy-result.txt
       env:
         SLACK_BOT_TOKEN: ${{ secrets.CICD_G6_BOTTOKEN }}
         # Set the HTTPS_PROXY environment variable to whatever your policy requires
         HTTPS_PROXY: ${{ secrets.CICD_G6_WEBHOOK }}
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.CICD_DOCKERHUB_USERNAME }}
+        password: ${{ secrets.CICD_DOCKERHUB_PASSWORD }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v5
+      with:
+        push: true
+        tags: user/app:${{steps.commit.outputs.short}}
 
     # - name: Send custom JSON data to Slack workflow
     #   id: slack
