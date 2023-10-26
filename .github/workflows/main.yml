@@ -62,7 +62,14 @@ jobs:
       env:
         # Set the HTTPS_PROXY environment variable to whatever your policy requires
         HTTPS_PROXY: ${{ secrets.CICD_G6_WEBHOOK }}
+
+  SignContainer:
+    name: CI_CD_SignContainer
+    needs: ScanRepo
+    runs-on: ubuntu-latest
+    if:  needs.ScanCode.exit-code == '0'
         
+    steps:
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
 
@@ -92,7 +99,6 @@ jobs:
       id: build-and-push
       with:
         # Do be aware that this is where you set your path.
-        context: ./fortunes
         # file: /Dockerfile
         push: true
         tags: saiwanita/cicd-test:latest
