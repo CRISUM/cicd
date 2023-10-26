@@ -26,7 +26,7 @@ jobs:
         severity: 'HIGH,CRITICAL'
 
     - name: Notify Slack and upload file on Failure
-      if: ${{ steps.ScanCode.outputs.vulnerabilities == 'true' }}
+      if: ${{ steps.ScanCode.outputs.vulnerabilities == 'false' }}
       id: SendSlack
       uses: MeilCli/slack-upload-file@v3
       with:
