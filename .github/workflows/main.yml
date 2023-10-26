@@ -85,7 +85,7 @@ jobs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Git:*\n${{github.repository}}"
+                    "text": "*Git:*\nhttps://github.com/${{github.repository}}.git"
                   }
                 ]
               }
@@ -220,7 +220,7 @@ jobs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Git:*\n${{github.repository}}"
+                    "text": "*Git:*\nhttps://github.com/${{github.repository}}.git"
                   },
                   {
                     "type": "mrkdwn",
