@@ -68,12 +68,12 @@ jobs:
       with:
         # platforms: linux/amd64,linux/arm/v7,linux/arm64
         push: true
-        tags: saiwanita/cicd-test:latest
+        tags: saiwanita/cicd-test/fortunes:latest
  
     - name: Sign the images with GitHub OIDC Token
       env:
         DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        TAGS: saiwanita/cicd-test:latest
+        TAGS: saiwanita/cicd-test/fortunes:latest
       run: cosign sign --yes "${TAGS}@${DIGEST}"
 
     # - name: Send custom JSON data to Slack workflow
