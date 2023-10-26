@@ -54,7 +54,7 @@ jobs:
       uses: docker/metadata-action@v4.4.0
       with:
         images: ghcr.io/sigstore/sample-honk
-        tags: type=sha,format=long
+        tags: saiwanita/cicd-test:latest,type=sha,format=long
 
     - name: Build and Push container images
       uses: docker/build-push-action@v4.0.0
