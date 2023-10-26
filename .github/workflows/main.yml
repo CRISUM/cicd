@@ -29,6 +29,18 @@ jobs:
       id: SetDockerImageTag
       run: docker build -t cicd-test:${GITHUB_SHA::8} .
 
+    - name: Post to a Slack channel via a proxy
+      id: slack
+      uses: slackapi/slack-github-action@v1.24.0
+      with:
+        channel-id: 'C062UQF9HFB'
+        slack-message: 'This message was sent through a proxy'
+        slack-file-path: 'trivy-result.txt'
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.CICD_G6_BOTTOKEN }}
+        # Set the HTTPS_PROXY environment variable to whatever your policy requires
+        HTTPS_PROXY: ${{ secrets.CICD_G6_WEBHOOK }}
+
     # - name: Send custom JSON data to Slack workflow
     #   id: slack
     #   uses: slackapi/slack-github-action@v1.24.0
