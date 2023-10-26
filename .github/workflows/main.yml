@@ -6,13 +6,9 @@ on:
       - 'v\d+.\d+'  # matches v<digit>.<digit>
 
 jobs:
-  build:
-    name: CI_CD_Pipeline
+  ScanRepo:
+    name: CI_CD_ScanRepo
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      id-token: write
 
     steps:
     - name: Checkout code
@@ -30,8 +26,8 @@ jobs:
         severity: 'HIGH,CRITICAL'
 
     - name: Notify Slack and upload file on Failure
-      if: success()
-      id: slack
+      if: ${{ steps.ScanCode.outputs.vulnerabilities == 'true' }}
+      id: SendSlack
       uses: MeilCli/slack-upload-file@v3
       with:
         channel_id: 'C062UQF9HFB'
@@ -45,6 +41,13 @@ jobs:
         # Set the HTTPS_PROXY environment variable to whatever your policy requires
         HTTPS_PROXY: ${{ secrets.CICD_G6_WEBHOOK }}
 
+  SignContainer:
+    name: CI_CD_SignContainer
+    needs: ScanRepo
+    runs-on: ubuntu-latest
+    if:  ${{ needs.ScanCode.outputs.vulnerabilities == 'false' }}
+        
+    steps:
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
 
