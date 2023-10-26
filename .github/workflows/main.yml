@@ -32,7 +32,7 @@ jobs:
     - name: Notify Slack and upload file on Failure
       if: success()
       id: slack
-      uses: slackapi/slack-github-action@v1.24.0
+      uses: MeilCli/slack-upload-file@v3
       with:
         channel-id: 'C062UQF9HFB'
         slack-token: ${{ secrets.CICD_G6_BOTTOKEN }}
