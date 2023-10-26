@@ -35,7 +35,7 @@ jobs:
       uses: slackapi/slack-github-action@v1.24.0
       with:
         channel-id: 'C062UQF9HFB'
-        slack_token: ${{ secrets.CICD_G6_BOTTOKEN }}
+        slack-token: ${{ secrets.CICD_G6_BOTTOKEN }}
         slack-message: 'This message was sent through a proxy'
         file-path: trivy-result.txt
         title: 'title of file'
