@@ -28,7 +28,7 @@ jobs:
         format: 'table'
         exit-code: '1'
         output: 'trivy-result.txt'
-        severity: 'CRITICAL'
+        severity: 'HIGH,CRITICAL'
 
     - name: Slack Notification Of Failure
       id: slack
@@ -196,11 +196,11 @@ jobs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Actions URL:*\n<https://github.com/${{github.repository}}/actions|XXX>"
+                    "text": "*Actions URL:*\n<https://github.com/${{github.repository}}/actions>"
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Commit:*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}|XXX>"
+                    "text": "*Commit:*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>"
                   },
                   {
                     "type": "mrkdwn",
@@ -208,15 +208,15 @@ jobs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Name:*\nXXX"
+                    "text": "*Name:*\nZou Dingyang"
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Metriculation:*\nXXX"
+                    "text": "*Metriculation:*\nA0286002N"
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Email:*\nXXX"
+                    "text": "*Email:*\nzouding@foxmail.com"
                   },
                   {
                     "type": "mrkdwn",
