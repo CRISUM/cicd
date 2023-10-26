@@ -29,9 +29,11 @@ jobs:
         exit-code: '1'
         output: 'trivy-result.txt'
         severity: 'HIGH,CRITICAL'
+      continue-on-error: true
 
     - name: Notify Slack and upload file on Failure
       id: SendSlack
+      if: failure()
       uses: MeilCli/slack-upload-file@v3
       with:
         channel_id: 'C062UQF9HFB'
@@ -66,7 +68,6 @@ jobs:
       env:
         SLACK_BOT_TOKEN: ${{ secrets.CICD_G6_BOTTOKEN }}
 
-
   SignFailure:
     name: CI_CD_Failure
     needs: ScanRepo
@@ -74,9 +75,9 @@ jobs:
     permissions: # do necessaey for atuo-login cosign
       contents: read
       id-token: write
-    if:  ${{ failure() }}
+    if:  success()
     steps:
-      
+      # necessary for docker container to know about the file.
     - name: Checkout code
       id: CheckCode
       uses: actions/checkout@v3
