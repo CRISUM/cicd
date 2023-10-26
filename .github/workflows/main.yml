@@ -38,14 +38,14 @@ jobs:
         channel-id: 'C062UQF9HFB'
         payload: |
           {
-            "text": "From Github: Failure Workflow Notification",
+            "text": "From Github: Failed Workflow Notification",
             "blocks":
             [
               {
                 "type": "header",
                 "text": {
                   "type": "plain_text",
-                  "text": "From Github: Failure Workflow Notification"
+                  "text": "From Github: Failed Workflow Notification"
                 }
               },
               {
