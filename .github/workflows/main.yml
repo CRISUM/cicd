@@ -26,7 +26,7 @@ jobs:
         severity: 'CRITICAL'
 
     - name: Notify Slack and upload file on Failure
-      if: steps.ScanCode.exit-code == '0'
+      if: steps.ScanCode.exit-code != '0'
       id: SendSlack
       uses: MeilCli/slack-upload-file@v3
       with:
@@ -45,7 +45,7 @@ jobs:
     name: CI_CD_SignContainer
     needs: ScanRepo
     runs-on: ubuntu-latest
-    if:  needs.ScanCode.exit-code != '0'
+    if:  needs.ScanCode.exit-code == '0'
         
     steps:
     - name: Set up QEMU
