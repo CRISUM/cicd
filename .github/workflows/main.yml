@@ -26,9 +26,55 @@ jobs:
         scan-type: 'fs'
         ignore-unfixed: true
         format: 'table'
-        exit-code: '1'
         output: 'trivy-result.txt'
         severity: 'HIGH,CRITICAL'
+
+    - name: Notify Slack and upload file on Failure
+      id: SendSlack
+      uses: MeilCli/slack-upload-file@v3
+      with:
+        channel_id: 'C062UQF9HFB'
+        slack_token: ${{ secrets.CICD_G6_BOTTOKEN }}
+        content: 'file content'
+        file_path: trivy-result.txt
+        file_type: 'text'
+        title: 'title of file'
+        initial_comment: 'post by slack-upload-file'
+      env:
+        # Set the HTTPS_PROXY environment variable to whatever your policy requires
+        HTTPS_PROXY: ${{ secrets.CICD_G6_WEBHOOK }}
+
+    - name: Slack Notification Of Failure
+      id: slack
+      uses: slackapi/slack-github-action@v1.24.0
+      with:
+        channel-id: 'C062UQF9HFB'
+        payload: |
+          {
+            "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.CICD_G6_BOTTOKEN }}
+
+
+  SignFailure:
+    name: CI_CD_Failure
+    needs: ScanRepo
+    runs-on: ubuntu-latest
+    permissions: # do necessaey for atuo-login cosign
+      contents: read
+      id-token: write
+    if:  ${{ failure() }}
+    steps:
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
@@ -91,37 +137,6 @@ jobs:
           }
       env:
         SLACK_BOT_TOKEN: ${{ secrets.CICD_G6_BOTTOKEN }}
-
-
-  SignFailure:
-    name: CI_CD_Failure
-    needs: ScanRepo
-    runs-on: ubuntu-latest
-    if:  ${{ failure() }}
-    steps:
-      - name: Notify Slack and upload file on Failure
-        id: SendSlack
-        uses: MeilCli/slack-upload-file@v3
-        with:
-          channel_id: 'C062UQF9HFB'
-          slack_token: ${{ secrets.CICD_G6_BOTTOKEN }}
-          content: 'file content'
-          file_path: trivy-result.txt
-          file_type: 'text'
-          title: 'title of file'
-          initial_comment: 'post by slack-upload-file'
-        env:
-          # Set the HTTPS_PROXY environment variable to whatever your policy requires
-          HTTPS_PROXY: ${{ secrets.CICD_G6_WEBHOOK }}
-
-      - name: Slack Notification Of Failure
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: 'C062UQF9HFB'
-          SLACK_COLOR: 'red' # or a specific color like 'good' or '#ff00ff'
-          SLACK_MESSAGE: 'Post Content :rocket:'
-          SLACK_TITLE: Post Title
-          SLACK_WEBHOOK: ${{ secrets.CICD_G6_WEBHOOK }}
 
           
     # - name: Send custom JSON data to Slack workflow
