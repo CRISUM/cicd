@@ -26,26 +26,26 @@ jobs:
         output: 'trivy-result.txt'
         severity: 'HIGH,CRITICAL'
 
-    - name: Slack Notification Of Failure
-      id: slack
-      uses: slackapi/slack-github-action@v1.24.0
-      with:
-        channel-id: 'C062UQF9HFB'
-        payload: |
-          {
-            "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
-            "blocks": [
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-                }
-              }
-            ]
-          }
-      env:
-        SLACK_BOT_TOKEN: ${{ secrets.CICD_G6_BOTTOKEN }}
+    # - name: Slack Notification Of Failure
+    #   id: slack
+    #   uses: slackapi/slack-github-action@v1.24.0
+    #   with:
+    #     channel-id: 'C062UQF9HFB'
+    #     payload: |
+    #       {
+    #         "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+    #         "blocks": [
+    #           {
+    #             "type": "section",
+    #             "text": {
+    #               "type": "mrkdwn",
+    #               "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+    #             }
+    #           }
+    #         ]
+    #       }
+    #   env:
+    #     SLACK_BOT_TOKEN: ${{ secrets.CICD_G6_BOTTOKEN }}
 
     - name: Notify Slack and upload file on Failure
       if: steps.ScanCode.exit-code != '0'
@@ -99,7 +99,7 @@ jobs:
       id: build-and-push
       with:
         # Do be aware that this is where you set your path.
-        context: ./fortunes/
+        context: ./fortunes
         # file: /Dockerfile
         push: true
         tags: saiwanita/cicd-test:latest
