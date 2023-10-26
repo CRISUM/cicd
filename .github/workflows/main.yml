@@ -93,6 +93,7 @@ jobs:
           }
       env:
         SLACK_BOT_TOKEN: ${{ secrets.CICD_G6_BOTTOKEN }}
+        SLACK_COLOR: 'bad'
 
     - name: Notify Slack and upload file on Failure
       id: SendSlack
