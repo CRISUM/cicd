@@ -24,11 +24,7 @@ jobs:
         format: 'table'
         output: 'trivy-results.txt'
         severity: 'HIGH,CRITICAL'
-
-    - name: Build Docker image
-      id: SetDockerImageTag
-      run: docker build -t cicd-test:${GITHUB_SHA::8} .
-
+        
     - name: Post to a Slack channel via a proxy
       id: slack
       uses: slackapi/slack-github-action@v1.24.0
