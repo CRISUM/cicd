@@ -54,7 +54,7 @@ jobs:
       uses: docker/metadata-action@v4.4.0
       with:
         images: ghcr.io/sigstore/sample-honk
-        tags: saiwanita/cicd-test:latest,type=sha,format=long
+        tags: type=sha,format=long
 
     - name: Build and Push container images
       uses: docker/build-push-action@v4.0.0
@@ -62,12 +62,12 @@ jobs:
       with:
         platforms: linux/amd64,linux/arm/v7,linux/arm64
         push: true
-        tags: ${{ steps.docker_meta.outputs.tags }}
+        tags: saiwanita/cicd-test:latest
  
     - name: Sign the images with GitHub OIDC Token
       env:
         DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        TAGS: ${{ steps.docker_meta.outputs.tags }}
+        TAGS: saiwanita/cicd-test:latest
       run: cosign sign --yes "${TAGS}@${DIGEST}"
 
     # - name: Send custom JSON data to Slack workflow
