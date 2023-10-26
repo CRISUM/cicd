@@ -46,8 +46,8 @@ jobs:
     #       }
     #   env:
     #     SLACK_BOT_TOKEN: ${{ secrets.CICD_G6_BOTTOKEN }}
+
     - name: Set up QEMU
-      if: steps.ScanCode.exit-code== '0'
       uses: docker/setup-qemu-action@v3
 
     - name: Set up Docker Buildx
@@ -91,7 +91,7 @@ jobs:
     name: CI_CD_Failure
     needs: ScanRepo
     runs-on: ubuntu-latest
-    if:  needs.ScanCode.exit-code != '0'
+    if:  ${{ failure() }}
     steps:
       - name: Notify Slack and upload file on Failure
         id: SendSlack
