@@ -34,10 +34,10 @@ jobs:
       id: slack
       uses: MeilCli/slack-upload-file@v3
       with:
-        channel-id: 'C062UQF9HFB'
+        channel_id: 'C062UQF9HFB'
         slack_token: ${{ secrets.CICD_G6_BOTTOKEN }}
-        slack-message: 'This message was sent through a proxy'
-        file-path: trivy-result.txt
+        file_path: trivy-result.txt
+        file_type: 'text'
         title: 'title of file'
         initial_comment: 'post by slack-upload-file'
       env:
