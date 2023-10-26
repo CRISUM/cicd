@@ -29,7 +29,6 @@ jobs:
         exit-code: '1'
         output: 'trivy-result.txt'
         severity: 'HIGH,CRITICAL'
-      continue-on-error: true
 
     - name: Notify Slack and upload file on Failure
       id: SendSlack
