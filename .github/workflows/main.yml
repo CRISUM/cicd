@@ -8,6 +8,7 @@ on:
 jobs:
   ScanRepo:
     name: CI_CD_ScanRepo
+    if: ${{ !(startsWith(github.event.head_commit.message, '#NORUN')) }}
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +24,7 @@ jobs:
         ignore-unfixed: true
         format: 'table'
         output: 'trivy-result.txt'
-        severity: 'CRITICAL'
+        severity: 'HIGH,CRITICAL'
 
     - name: Notify Slack and upload file on Failure
       if: steps.ScanCode.exit-code != '0'
