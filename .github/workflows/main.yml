@@ -10,6 +10,9 @@ jobs:
     name: CI_CD_ScanRepo
     if: ${{ !(startsWith(github.event.head_commit.message, '#NORUN')) }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
     - name: Checkout code
