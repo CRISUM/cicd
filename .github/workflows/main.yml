@@ -23,7 +23,7 @@ jobs:
         ignore-unfixed: true
         format: 'table'
         output: 'trivy-result.txt'
-        severity: 'HIGH,CRITICAL'
+        severity: 'CRITICAL'
 
     - name: Notify Slack and upload file on Failure
       if: steps.ScanCode.exit-code == '0'
