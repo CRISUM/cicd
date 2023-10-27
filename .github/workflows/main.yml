@@ -28,7 +28,7 @@ jobs:
         format: 'table'
         exit-code: '1'
         output: 'trivy-result.txt'
-        severity: 'HIGH,CRITICAL'
+        severity: 'CRITICAL'
 
     - name: Slack Notification Of Failure
       if: failure()
@@ -36,7 +36,7 @@ jobs:
       env:
         SLACK_WEBHOOK: ${{ secrets.CICD_SUBMIT_WEBHOOK }}
         SLACK_MESSAGE: "
-          *Image build & signed*\n
+          *Build Failure*\n
           *Name:* Zou Dingyang\n
           *Matriculation:* A0286002N\n
           *Email:* zouding@foxmail.com\n
