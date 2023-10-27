@@ -93,6 +93,7 @@ jobs:
           }
       env:
         SLACK_BOT_TOKEN: ${{ secrets.CICD_REPORT_BOTTOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.CICD_SUBMIT_WEBHOOK }}
 
     - name: Notify Slack and upload file on Failure
       id: SendSlack
@@ -232,3 +233,4 @@ jobs:
           }
       env:
         SLACK_BOT_TOKEN: ${{ secrets.CICD_REPORT_BOTTOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.CICD_SUBMIT_WEBHOOK }}
