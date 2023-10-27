@@ -35,7 +35,7 @@ jobs:
       if: failure()
       uses: slackapi/slack-github-action@v1.24.0
       with:
-        channel-id: 'C062UQF9HFB'
+        channel-id: 'C05RLJ1VDLY'
         payload: |
           {
             "text": "From Github: Failed Workflow Notification",
@@ -99,7 +99,7 @@ jobs:
       if: failure()
       uses: MeilCli/slack-upload-file@v3
       with:
-        channel_id: 'C062UQF9HFB'
+        channel_id: 'C05RLJ1VDLY'
         slack_token: ${{ secrets.CICD_REPORT_BOTTOKEN }}
         content: 'file content'
         file_path: trivy-result.txt
@@ -170,7 +170,7 @@ jobs:
       id: slack
       uses: slackapi/slack-github-action@v1.24.0
       with:
-        channel-id: 'C062UQF9HFB'
+        channel-id: 'C05RLJ1VDLY'
         payload: |
           {
             "text": "From Github: Success Workflow Notification",
