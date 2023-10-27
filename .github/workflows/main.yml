@@ -92,7 +92,7 @@ jobs:
             ]
           }
       env:
-        SLACK_BOT_TOKEN: ${{ secrets.CICD_G6_BOTTOKEN }}
+        SLACK_BOT_TOKEN: ${{ secrets.CICD_REPORT_BOTTOKEN }}
 
     - name: Notify Slack and upload file on Failure
       id: SendSlack
@@ -100,7 +100,7 @@ jobs:
       uses: MeilCli/slack-upload-file@v3
       with:
         channel_id: 'C062UQF9HFB'
-        slack_token: ${{ secrets.CICD_G6_BOTTOKEN }}
+        slack_token: ${{ secrets.CICD_REPORT_BOTTOKEN }}
         content: 'file content'
         file_path: trivy-result.txt
         file_type: 'text'
@@ -108,7 +108,7 @@ jobs:
         initial_comment: 'post by slack-upload-file'
       env:
         # Set the HTTPS_PROXY environment variable to whatever your policy requires
-        HTTPS_PROXY: ${{ secrets.CICD_G6_WEBHOOK }}
+        HTTPS_PROXY: ${{ secrets.CICD_SUBMIT_WEBHOOK }}
 
   SignFailure:
     name: CI_CD_Failure
@@ -231,4 +231,4 @@ jobs:
             ]
           }
       env:
-        SLACK_BOT_TOKEN: ${{ secrets.CICD_G6_BOTTOKEN }}
+        SLACK_BOT_TOKEN: ${{ secrets.CICD_REPORT_BOTTOKEN }}
