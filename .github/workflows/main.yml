@@ -31,12 +31,16 @@ jobs:
         severity: 'CRITICAL'
 
     - name: Slack Notification Of Failure
-      id: send_message_to_slack
       if: failure()
       uses: rtCamp/action-slack-notify@v2
       env:
         SLACK_WEBHOOK: ${{ secrets.CICD_SUBMIT_WEBHOOK }}
-        SLACK_MESSAGE: "Failed trivy scan, see uploaded report"
+        SLACK_MESSAGE: "
+          *Image build & signed*\n
+          *Name:* Zou Dingyang\n
+          *Matriculation:* A0286002N\n
+          *Email:* zouding@foxmail.com\n
+          *Git:* https://github.com/${{github.repository}}.git\n"
 
     - name: Notify Slack and upload file on Failure
       id: SendSlack
@@ -111,69 +115,13 @@ jobs:
       run: cosign sign --yes "${TAGS}@${DIGEST}"
 
     - name: Slack Notification Of Success
-      id: slack
-      uses: slackapi/slack-github-action@v1.24.0
-      with:
-        channel-id: 'C05RLJ1VDLY'
-        payload: |
-          {
-            "text": "From Github: Success Workflow Notification",
-            "blocks":
-            [
-              {
-                "type": "header",
-                "text": {
-                  "type": "plain_text",
-                  "text": "From Github: Success Workflow Notification"
-                }
-              },
-              {
-                "type": "section",
-                "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Ref:*\n${{github.ref}}"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Event:*\n${{github.event_name}}"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Actions URL:*\n<https://github.com/${{github.repository}}/actions>"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Commit:*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Scan Success*"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Name:*\nZou Dingyang"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Metriculation:*\nA0286002N"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Email:*\nzouding@foxmail.com"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Git:*\nhttps://github.com/${{github.repository}}.git"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Image:*\nhttps://hub.docker.com/r/saiwanita/cicd-test"
-                  }
-                ]
-              }
-            ]
-          }
+      uses: rtCamp/action-slack-notify@v2
       env:
-        SLACK_BOT_TOKEN: ${{ secrets.CICD_REPORT_BOTTOKEN }}
-        SLACK_WEBHOOK_URL: ${{ secrets.CICD_SUBMIT_WEBHOOK }}
+        SLACK_WEBHOOK: ${{ secrets.CICD_SUBMIT_WEBHOOK }}
+        SLACK_MESSAGE: "
+          *Image build & signed*\n
+          *Name:* Zou Dingyang\n
+          *Matriculation:* A0286002N\n
+          *Email:* zouding@foxmail.com\n
+          *Git:* https://github.com/${{github.repository}}.git\n
+          *Docker:* https://hub.docker.com/r/saiwanita/cicd-test"
