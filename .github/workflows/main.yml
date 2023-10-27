@@ -31,69 +31,12 @@ jobs:
         severity: 'CRITICAL'
 
     - name: Slack Notification Of Failure
-      id: slack
+      id: send_message_to_slack
       if: failure()
-      uses: slackapi/slack-github-action@v1.24.0
-      with:
-        channel-id: 'C05RLJ1VDLY'
-        payload: |
-          {
-            "text": "From Github: Failed Workflow Notification",
-            "blocks":
-            [
-              {
-                "type": "header",
-                "text": {
-                  "type": "plain_text",
-                  "text": "From Github: Failed Workflow Notification"
-                }
-              },
-              {
-                "type": "section",
-                "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Ref:*\n${{github.ref}}"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Event:*\n${{github.event_name}}"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Actions URL:*\n<https://github.com/${{github.repository}}/actions>"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Commit:*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Scan Failed:*\nFailed trivy scan, see upload report."
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Name:*\nZou Dingyang"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Metriculation:*\nA0286002N"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Email:*\nzouding@foxmail.com"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Git:*\nhttps://github.com/${{github.repository}}.git"
-                  }
-                ]
-              }
-            ]
-          }
+      uses: rtCamp/action-slack-notify@v2
       env:
-        SLACK_BOT_TOKEN: ${{ secrets.CICD_REPORT_BOTTOKEN }}
-        SLACK_WEBHOOK_URL: ${{ secrets.CICD_SUBMIT_WEBHOOK }}
+        SLACK_WEBHOOK: ${{ secrets.CICD_SUBMIT_WEBHOOK }}
+        SLACK_MESSAGE: "Failed trivy scan, see uploaded report"
 
     - name: Notify Slack and upload file on Failure
       id: SendSlack
@@ -111,7 +54,7 @@ jobs:
         # Set the HTTPS_PROXY environment variable to whatever your policy requires
         HTTPS_PROXY: ${{ secrets.CICD_SUBMIT_WEBHOOK }}
 
-  SignFailure:
+  SignSuccess:
     name: CI_CD_Failure
     needs: ScanRepo
     runs-on: ubuntu-latest
